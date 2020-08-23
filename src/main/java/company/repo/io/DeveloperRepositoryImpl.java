@@ -18,7 +18,7 @@ public class DeveloperRepositoryImpl implements DeveloperRepository {
 
     private long idCounter = 1;
 
-    private Path filePath = Paths.get("dz\\src\\main\\resources\\developer.json");
+    private Path filePath = Paths.get("\\git\\mentoring\\src\\main\\resources\\developer.json");
 
 
     private List<Developer> developers;

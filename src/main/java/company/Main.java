@@ -1,7 +1,7 @@
 package company;
 
 
-import company.view.DeveloperVIew;
+import company.userActivity.UserInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,13 +29,10 @@ import java.io.InputStreamReader;
 public class Main {
 
     public static void main(String[] args) {
-      
 
-
-        DeveloperVIew developerVIew = new DeveloperVIew();
+        UserInterface userInterface = new UserInterface();
 
         System.out.println("Welcome to Developer manager V1.0");
-
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));){
 
@@ -47,22 +44,7 @@ public class Main {
                         "create developer pres 3" +System.lineSeparator());
 
                 String read = reader.readLine();
-                switch (read) {
-                    case "1":
-                        developerVIew.addNewDeveloper();
-                        break;
-                    case "2":
-                        developerVIew.showAllDevelopers();
-                        break;
-                    case "3":
-                        developerVIew.createDeveloper();
-                        break;
-                    case "0":
-
-                        System.exit(1);
-                }
-
-
+                userInterface.changeActivity(read);
             }
         } catch (IOException e) {
             System.out.println("how could you break anything?");

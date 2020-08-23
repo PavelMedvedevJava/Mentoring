@@ -2,6 +2,7 @@ package company.controller;
 
 import company.model.Developer;
 import company.repo.DeveloperRepository;
+import company.repo.io.CSV.DeveloperRepositoryImplCSV;
 import company.repo.io.DeveloperRepositoryImpl;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 public class DeveloperController {
 
-    private DeveloperRepository developerRepository = new DeveloperRepositoryImpl();
+    private DeveloperRepository developerRepository = new DeveloperRepositoryImplCSV();
 
     public List<Developer> getAllDev() {
         return (List<Developer>) developerRepository.getAll();

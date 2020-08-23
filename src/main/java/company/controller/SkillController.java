@@ -2,6 +2,7 @@ package company.controller;
 
 import company.model.Skill;
 import company.repo.SkillRepository;
+import company.repo.io.CSV.SkillRepositoryImplCSV;
 import company.repo.io.SkillRepositoryImpl;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 public class SkillController {
 
 
-    private SkillRepository skillRepository =new SkillRepositoryImpl();
+    private SkillRepository skillRepository =new SkillRepositoryImplCSV();
 
     public List<Skill> getAllSkill() {
         return (List<Skill>) skillRepository.getAll();

@@ -21,6 +21,14 @@ public class Skill implements Serializable {
 
     }
 
+    public Skill() {
+    }
+
+    public String getSkill() {
+        return skill;
+    }
+
+
     public long getId() {
         return id;
     }

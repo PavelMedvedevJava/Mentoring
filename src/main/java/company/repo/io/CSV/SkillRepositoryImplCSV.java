@@ -1,8 +1,13 @@
-package company.repo.io;
+package company.repo.io.CSV;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import company.model.Skill;
 import company.repo.SkillRepository;
 
@@ -12,13 +17,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class SkillRepositoryImpl implements SkillRepository {
-
+public class SkillRepositoryImplCSV  implements SkillRepository {
     private long idCounter = 1;
 
-    private Path filePath = Paths.get("\\git\\mentoring\\src\\main\\resources\\skills.json");
+    private Path filePath = Paths.get("\\git\\mentoring\\src\\main\\resources\\skills.csv");
 
-    private final String fileName = "\\git\\mentoring\\src\\main\\resources\\skills.json";
+    private final String fileName = "\\git\\mentoring\\src\\main\\resources\\skills.csv";
 
     private List<Skill> listOfSkills = new ArrayList<>();
 
@@ -33,19 +37,17 @@ public class SkillRepositoryImpl implements SkillRepository {
             }
 
         }
-
-
-        Reader reader = null;
         try {
-            reader = new FileReader(fileName);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        Gson gson1 = new GsonBuilder().create();
-        listOfSkills = gson1.fromJson(reader, new TypeToken<ArrayList<Skill>>() {
-        }.getType());
-        return listOfSkills;
+            Reader reader = Files.newBufferedReader(filePath);
 
+            listOfSkills = new CsvToBeanBuilder(reader).withType(Skill.class).build().parse();
+            reader.close();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        return listOfSkills;
     }
 
     @Override
@@ -79,12 +81,8 @@ public class SkillRepositoryImpl implements SkillRepository {
             listOfSkills.add(skill);
 
         }
-        try (Writer writer = new FileWriter(fileName)) {
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(listOfSkills, writer);
-        } catch (IOException e) {
-            System.out.println("Error write file");
-        }
+
+       writeSkillList(listOfSkills);
 
         return skill;
     }
@@ -100,12 +98,7 @@ public class SkillRepositoryImpl implements SkillRepository {
 
         listOfSkills.add(skill);
 
-        try (Writer writer = new FileWriter(fileName)) {
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(listOfSkills, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+       writeSkillList(listOfSkills);
         return skill;
 
     }
@@ -129,11 +122,26 @@ public class SkillRepositoryImpl implements SkillRepository {
         return Objects.requireNonNull(getAllSkill().stream().filter(x -> x.getId() == id).findFirst());
 
     }
+    private void writeSkillList(List listOfSkills) {
+        try {
+            Writer writer = Files.newBufferedWriter(filePath);
+            StatefulBeanToCsv<Skill> csvWriter = new StatefulBeanToCsvBuilder<Skill>(writer)
+                    .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+                    .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+                    .withEscapechar(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
+                    .withLineEnd(CSVWriter.DEFAULT_LINE_END)
+                    .withOrderedResults(false)
+                    .build();
+            csvWriter.write(listOfSkills);
+            writer.close();
 
-    private Long getNewId() {
-       return getAllSkill().stream().max(Comparator.comparing(i -> i.getId())).get().getId() + 1;
+        } catch (IOException | CsvRequiredFieldEmptyException | CsvDataTypeMismatchException e) {
+            e.printStackTrace();
+        }
+
     }
 
-
+    private Long getNewId() {
+        return getAllSkill().stream().max(Comparator.comparing(i -> i.getId())).get().getId() + 1;
+    }
 }
-

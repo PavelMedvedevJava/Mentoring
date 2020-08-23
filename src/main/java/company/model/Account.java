@@ -15,6 +15,17 @@ public class Account implements Serializable {
         this.id = id;
     }
 
+    public Account() {
+    }
+
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(AccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
     public long getDevId() {
         return id;
     }

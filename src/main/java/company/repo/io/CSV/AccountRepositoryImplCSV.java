@@ -1,8 +1,9 @@
-package company.repo.io;
+package company.repo.io.CSV;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.*;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import company.model.Account;
 import company.repo.AccountRepository;
 
@@ -15,13 +16,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class AccountRepositoryImpl implements AccountRepository {
-
+public class AccountRepositoryImplCSV implements AccountRepository {
     private long idCounter = 1;
 
-    private final String fileName = "\\git\\mentoring\\src\\main\\resources\\account.json";
+    private final String fileName = "\\git\\mentoring\\src\\main\\resources\\account.csv";
 
-    private Path filePath = Paths.get("account.json");
+    private Path filePath = Paths.get("\\git\\mentoring\\src\\main\\resources\\account.csv");
 
     private List<Account> accountList = new ArrayList<>();
 
@@ -37,7 +37,6 @@ public class AccountRepositoryImpl implements AccountRepository {
             account.setId(idCounter);
             idCounter++;
             accountList.add(account);
-
 
 
         } else {
@@ -65,17 +64,30 @@ public class AccountRepositoryImpl implements AccountRepository {
             }
 
 
-            try (Writer writer = new FileWriter(String.valueOf(Paths.get(fileName)))) {
-                Gson gson = new GsonBuilder().create();
-                gson.toJson(accountList, writer);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            writeAccountList(accountList);
         }
         return account;
 
     }
 
+    private void writeAccountList(List accountList) {
+        try {
+            Writer writer = Files.newBufferedWriter(filePath);
+            StatefulBeanToCsv<Account> csvWriter = new StatefulBeanToCsvBuilder<Account>(writer)
+                    .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+                    .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+                    .withEscapechar(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
+                    .withLineEnd(CSVWriter.DEFAULT_LINE_END)
+                    .withOrderedResults(false)
+                    .build();
+            csvWriter.write(accountList);
+            writer.close();
+
+        } catch (IOException | CsvRequiredFieldEmptyException | CsvDataTypeMismatchException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     private Long getNewId() {
         return getAll().stream().max(Comparator.comparing(i -> i.getId())).get().getId() + 1;
@@ -87,33 +99,21 @@ public class AccountRepositoryImpl implements AccountRepository {
         delete(account.getId());
         create(account);
 
-
-        try (Writer writer = new FileWriter(fileName)) {
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(accountList, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        writeAccountList(accountList);
         return account;
     }
-
-
 
 
     public void delete(Long id) {
         accountList.removeIf(e -> e.getId() == id);
 
-        try (Writer writer = new FileWriter(fileName)) {
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(accountList, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+        writeAccountList(accountList);
     }
-@Override
+
+    @Override
     public List<Account> getAll() {
+
+
         if (!Files.exists(Paths.get(fileName))) {
             try {
                 Files.createFile(Paths.get(fileName));
@@ -122,21 +122,20 @@ public class AccountRepositoryImpl implements AccountRepository {
             }
         }
 
+            try {
+                Reader reader = Files.newBufferedReader(filePath);
 
-        try {
-            Reader reader = new FileReader(fileName);
+                accountList = new CsvToBeanBuilder(reader).withType(Account.class).build().parse();
+                reader.close();
 
-            Gson gson1 = new GsonBuilder().create();
-            accountList = gson1.fromJson(reader, new TypeToken<ArrayList<Account>>() {
-            }.getType());
-            return accountList;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        return accountList;
     }
-@Override
-    public Optional<Account> read (Long id) {
+
+    @Override
+    public Optional<Account> read(Long id) {
 
         return getAll().stream().filter(x -> x.getDevId() == id).findFirst();
     }
