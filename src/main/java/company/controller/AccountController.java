@@ -3,8 +3,7 @@ package company.controller;
 import company.model.Account;
 import company.model.AccountStatus;
 import company.repo.AccountRepository;
-import company.repo.io.AccountRepositoryImpl;
-import company.repo.io.CSV.AccountRepositoryImplCSV;
+import company.repo.csv.AccountRepositoryImplCSV;
 
 import java.util.Optional;
 

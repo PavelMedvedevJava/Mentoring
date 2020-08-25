@@ -1,4 +1,4 @@
-package company.repo.io.CSV;
+package company.repo.csv;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;

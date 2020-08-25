@@ -6,8 +6,7 @@ import company.model.Account;
 import company.model.Developer;
 import company.model.Skill;
 import company.repo.DeveloperRepository;
-import company.repo.io.CSV.DeveloperRepositoryImplCSV;
-import company.repo.io.DeveloperRepositoryImpl;
+import company.repo.csv.DeveloperRepositoryImplCSV;
 
 import java.io.BufferedReader;
 import java.io.IOException;

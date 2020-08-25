@@ -1,4 +1,4 @@
-package company.userActivity;
+package company.useractivity;
 
 public class UserInterface {
     Activity activity;

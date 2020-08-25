@@ -1,4 +1,4 @@
-package company.repo.io.CSV;
+package company.repo.csv;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

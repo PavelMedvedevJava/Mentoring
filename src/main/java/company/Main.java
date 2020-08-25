@@ -1,7 +1,7 @@
 package company;
 
 
-import company.userActivity.UserInterface;
+import company.useractivity.UserInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;

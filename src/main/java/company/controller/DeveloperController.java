@@ -2,8 +2,7 @@ package company.controller;
 
 import company.model.Developer;
 import company.repo.DeveloperRepository;
-import company.repo.io.CSV.DeveloperRepositoryImplCSV;
-import company.repo.io.DeveloperRepositoryImpl;
+import company.repo.csv.DeveloperRepositoryImplCSV;
 
 import java.util.List;
 import java.util.Objects;

@@ -2,8 +2,7 @@ package company.controller;
 
 import company.model.Skill;
 import company.repo.SkillRepository;
-import company.repo.io.CSV.SkillRepositoryImplCSV;
-import company.repo.io.SkillRepositoryImpl;
+import company.repo.csv.SkillRepositoryImplCSV;
 
 import java.util.List;
 
