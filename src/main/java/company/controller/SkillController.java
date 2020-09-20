@@ -3,13 +3,18 @@ package company.controller;
 import company.model.Skill;
 import company.repo.SkillRepository;
 import company.repo.csv.SkillRepositoryImplCSV;
+import company.repo.sql.SkillRepositoryImplSQL;
 
 import java.util.List;
 
 public class SkillController {
 
 
-    private SkillRepository skillRepository =new SkillRepositoryImplCSV();
+    private SkillRepository skillRepository ;
+
+    public SkillController(SkillRepository skillRepository) {
+        this.skillRepository = skillRepository;
+    }
 
     public List<Skill> getAllSkill() {
         return (List<Skill>) skillRepository.getAll();

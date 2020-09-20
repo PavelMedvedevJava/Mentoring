@@ -7,6 +7,8 @@ import company.model.Developer;
 import company.model.Skill;
 import company.repo.DeveloperRepository;
 import company.repo.csv.DeveloperRepositoryImplCSV;
+import company.repo.sql.AccountRepositoryImplSQL;
+import company.repo.sql.DeveloperRepositoryImplSQL;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,13 +18,12 @@ import java.util.Optional;
 
 
 public class DeveloperVIew {
-    private DeveloperController developerController = new DeveloperController();
-    private AccountController accountController = new AccountController();
+    private DeveloperController developerController = new DeveloperController(new DeveloperRepositoryImplSQL());
+    private AccountController accountController = new AccountController(new AccountRepositoryImplSQL());
     private SkillView skillView = new SkillView();
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private AccountView accountView = new AccountView();
     private Developer developer;
-   private DeveloperRepository developerRepository = new DeveloperRepositoryImplCSV();
 
 
     public void addNewDeveloper() {
@@ -71,7 +72,7 @@ public class DeveloperVIew {
 
         developer.setAccount(accountView.addAccount());
 
-        developerRepository.create(developer);
+        developerController.create(developer);
 
     }
 

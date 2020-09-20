@@ -4,13 +4,17 @@ import company.model.Account;
 import company.model.AccountStatus;
 import company.repo.AccountRepository;
 import company.repo.csv.AccountRepositoryImplCSV;
+import company.repo.sql.AccountRepositoryImplSQL;
 
 import java.util.Optional;
 
 public class AccountController {
 
-    private AccountRepository accountRepository =new AccountRepositoryImplCSV() ;
+    private AccountRepository accountRepository ;
 
+    public AccountController(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
 
     public Account addAccount(Account account) {
 

@@ -3,6 +3,7 @@ package company.view;
 import company.controller.AccountController;
 import company.model.Account;
 import company.model.AccountStatus;
+import company.repo.sql.AccountRepositoryImplSQL;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.io.InputStreamReader;
 public class AccountView {
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-    private AccountController accountController = new AccountController();
+    private AccountController accountController = new AccountController(new AccountRepositoryImplSQL());
 
     private Account acc;
 
