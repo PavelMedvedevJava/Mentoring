@@ -1,23 +1,28 @@
 package company.model;
 
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-
+@Entity
+@Table(name="developers",schema = "mydb")
 public class Developer implements Serializable {
 
-
+@Id
+@GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
+@Column(name="name")
     private String name;
-
+@Column(name = "lastname")
     private String lastName;
 
+@OneToMany
+@JoinColumn(name = "id_for_developer")
     private Set<Skill> skills = new HashSet<>();
-
+@OneToOne
     private Account account;
 
     public Developer(long id, String name, String lastName, Set<Skill> skills, Account account) {

@@ -1,12 +1,16 @@
 package company.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "accounts",schema = "mydb")
 public class Account implements Serializable {
 
-
+@Id
+@GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
+@Column(name = "Account")
     private AccountStatus accountStatus;
 
     public Account(AccountStatus accountStatus, long id) {

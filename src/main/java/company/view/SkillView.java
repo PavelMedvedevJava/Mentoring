@@ -2,6 +2,7 @@ package company.view;
 
 import company.controller.SkillController;
 import company.model.Skill;
+import company.repo.hibernate.SkillRepositoryImplHibernate;
 import company.repo.sql.SkillRepositoryImplSQL;
 
 import java.io.BufferedReader;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 public class SkillView {
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    private SkillController skillController = new SkillController(new SkillRepositoryImplSQL());
+    private SkillController skillController = new SkillController(new SkillRepositoryImplHibernate());
 
     public Skill addNewSkill() {
 

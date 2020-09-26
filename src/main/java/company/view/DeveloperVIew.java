@@ -7,6 +7,8 @@ import company.model.Developer;
 import company.model.Skill;
 import company.repo.DeveloperRepository;
 import company.repo.csv.DeveloperRepositoryImplCSV;
+import company.repo.hibernate.AccountRepositoryImplHibernate;
+import company.repo.hibernate.DeveloperRepositoryImplHibernate;
 import company.repo.sql.AccountRepositoryImplSQL;
 import company.repo.sql.DeveloperRepositoryImplSQL;
 
@@ -18,8 +20,8 @@ import java.util.Optional;
 
 
 public class DeveloperVIew {
-    private DeveloperController developerController = new DeveloperController(new DeveloperRepositoryImplSQL());
-    private AccountController accountController = new AccountController(new AccountRepositoryImplSQL());
+    private DeveloperController developerController = new DeveloperController(new DeveloperRepositoryImplHibernate());
+    private AccountController accountController = new AccountController(new AccountRepositoryImplHibernate());
     private SkillView skillView = new SkillView();
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private AccountView accountView = new AccountView();

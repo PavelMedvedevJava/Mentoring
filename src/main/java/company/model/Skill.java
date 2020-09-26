@@ -1,12 +1,15 @@
 package company.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
-
+@Entity
+@Table(name="skills",schema = "mydb")
 public class Skill implements Serializable {
-
+@Column(name = "skill")
     private String skill;
-
+@Id
+@GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     public Skill(String skill) {
