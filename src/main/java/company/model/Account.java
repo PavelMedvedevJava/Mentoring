@@ -1,5 +1,8 @@
 package company.model;
 
+
+
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -10,8 +13,9 @@ public class Account implements Serializable {
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-@Column(name = "Account")
-    private AccountStatus accountStatus;
+@Enumerated(EnumType.STRING)
+@Column(name = "account")
+private AccountStatus accountStatus;
 
     public Account(AccountStatus accountStatus, long id) {
 

@@ -12,33 +12,37 @@ import java.util.Optional;
 
 public class DeveloperRepositoryImplHibernate implements DeveloperRepository {
     private Session session;
+    private Developer developer;
+
     @Override
     public Developer create(Developer developer) {
+
         session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
+        Transaction transaction = session.beginTransaction();
         session.save(developer);
-        tx1.commit();
+        transaction.commit();
         session.close();
         return developer;
     }
 
     @Override
     public Developer update(Developer developer) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
+        session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
         session.update(developer);
 
-        tx1.commit();
+        transaction.commit();
         session.close();
         return developer;
     }
 
     @Override
     public void delete(Long aLong) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.delete(String.valueOf(Developer.class),aLong);
-        tx1.commit();
+        session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        Developer developer = (Developer) session.get(Developer.class, aLong);
+        session.delete(developer);
+        transaction.commit();
         session.close();
 
 
@@ -46,12 +50,17 @@ public class DeveloperRepositoryImplHibernate implements DeveloperRepository {
 
     @Override
     public Optional<Developer> read(Long aLong) {
-        return (Optional<Developer>) HibernateSessionFactoryUtil.getSessionFactory().openSession().get(String.valueOf(Developer.class), aLong);
+        session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        developer = (Developer) session.get(Developer.class, aLong);
+        transaction.commit();
+        session.close();
+        return Optional.ofNullable(developer);
     }
 
     @Override
     public Collection<Developer> getAll() {
-        List<Developer> developerList = (List<Developer>)  HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From Developer ").list();
+        List<Developer> developerList = (List<Developer>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From Developer ").list();
         return developerList;
     }
 }

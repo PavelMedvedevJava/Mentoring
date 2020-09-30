@@ -3,6 +3,7 @@
                 "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
+
 <session-factory>
     <property name="hibernate.dialect">
         org.hibernate.dialect.MySQLDialect
@@ -21,6 +22,10 @@
     <property name="hibernate.connection.password">
        root
     </property>
+
+    <property name="show_sql">true</property>
+    
+    <property name="hibernate.hbm2ddl.auto">validate</property>
 
     <mapping class="company.model.Account"/>
     <mapping class="company.model.Developer"/>

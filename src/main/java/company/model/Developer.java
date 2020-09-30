@@ -8,21 +8,26 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name="developers",schema = "mydb")
+@Table(name = "developers", schema = "mydb")
+
+
 public class Developer implements Serializable {
 
-@Id
-@GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-@Column(name="name")
+    @Column(name = "name")
     private String name;
-@Column(name = "lastname")
+    @Column(name = "lastname")
     private String lastName;
 
-@OneToMany
-@JoinColumn(name = "id_for_developer")
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "developer_skills",
+            joinColumns = @JoinColumn(name="developer_id"),
+    inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private Set<Skill> skills = new HashSet<>();
-@OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "account_id")
     private Account account;
 
     public Developer(long id, String name, String lastName, Set<Skill> skills, Account account) {

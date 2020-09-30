@@ -1,10 +1,8 @@
 package company.repo.hibernate;
 
-import company.model.Account;
-import company.model.Developer;
-import company.model.Skill;
+
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
 import org.hibernate.cfg.Configuration;
 
 public class HibernateSessionFactoryUtil {
@@ -12,15 +10,10 @@ public class HibernateSessionFactoryUtil {
 
     private HibernateSessionFactoryUtil() {}
 
-    public static SessionFactory getSessionFactory() {
+    public static final SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             try {
-                Configuration configuration = new Configuration().configure();
-                configuration.addAnnotatedClass(Skill.class);
-                configuration.addAnnotatedClass(Developer.class);
-                configuration.addAnnotatedClass(Account.class);
-                StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-                sessionFactory = configuration.buildSessionFactory(builder.build());
+                sessionFactory = new Configuration().configure().buildSessionFactory();
 
             } catch (Exception e) {
                 System.out.println("Исключение!" + e);
